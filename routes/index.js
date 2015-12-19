@@ -1,3 +1,7 @@
+//MLL - imported routes from assignment 1
+//MLL - imported mongoose stuff
+//MLL - imported the data route for assignment 1, but changed it so that you can only 
+// use it if you are authenticated
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -65,20 +69,22 @@ module.exports = function(passport) {
 			failureRedirect : '/'
 		})
 	);
+	
+	
 
-	// route for google authentication and login
-	// different scopes while logging in
-	router.get('/login/google', 
-		passport.authenticate('google'));
+	
+	
+	router.get('/login/linkedin',
+  passport.authenticate('linkedin'));
 
-	// handle the callback after google has authenticated the user
-	router.get('/login/google/callback',
-		passport.authenticate('google', {
+	// handle the callback after facebook has authenticated the user
+	router.get('/login/linkedin/callback',
+		passport.authenticate('linkedin', {
 			successRedirect : '/home',
 			failureRedirect : '/'
 		})
 	);
-	
+
 	//MLL - data route, only if authenticated!
 	router.get('/data', isAuthenticated, function(req, res, next) {
 	  GraphData.find({}, {_id: 0}, function(err, data){

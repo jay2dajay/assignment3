@@ -1,16 +1,20 @@
-var GoogleStrategy = require('passport-google').Strategy;
+var LinkedinStrategy = require('passport-linkedin').Strategy;
 var User = require('../models/User');
-var googleConfig = require('../googleID.js');
+var lkConfig = require('../linkd.js');
 
 module.exports = function(passport) {
 
-passport.use('google',new GoogleStrategy({
-    clientID:     googleConfig.appID,
-    clientSecret: googleConfig.appSecret,
-    callbackURL:  googleConfig.callbackUrl,
-    profileFields	: ['emails', 'first_name', 'last_name']
-  },
-     function(access_token, refresh_token, profile, done) {
+    passport.use('linkedin', new LinkedinStrategy({
+        consumerKey        : lkConfig.appID,
+        consumerSecret    : lkConfig.appSecret,
+        callbackURL     : lkConfig.callbackUrl,
+        // MLL - Added profileFields parameter
+        // http://stackoverflow.com/questions/19073128/facebook-oauth2-does-not-provide-user-email
+        profileFields	: ['emails', 'first_name', 'last_name']
+    },
+
+    // facebook will send back the tokens and profile
+    function(access_token, refresh_token, profile, done) {
 		
     	console.log('profile', profile);
 
